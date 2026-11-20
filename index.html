@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>마이트립(My Trip) - 동화형 자아탐색 여행</title>
+  <meta name="description" content="노란 캠핑카를 타고 요정 모아와 함께 5개 마을을 여행하는 청소년 자아탐색 웹앱">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- 앱 메인 컨테이너 -->
+  <div id="app-container">
+
+    <!-- 상단 글로벌 헤더 -->
+    <header class="global-header">
+      <div class="brand-badge" id="brand-badge">
+        <span>🚐</span> 마이트립
+      </div>
+      <div class="user-badge" id="header-user-badge" title="나의 프로필 수정">
+        🌱 여행자 (봄)
+      </div>
+      <div class="status-gauges">
+        <div class="gauge-chip coin" title="모은 코인">
+          <span class="icon">🪙</span>
+          <span id="header-coin-val">100</span>
+        </div>
+        <div class="gauge-chip fuel" title="여행용 기름">
+          <span class="icon">⛽</span>
+          <span id="header-fuel-val">100%</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- 🌟 전체 여정 진행률 직관적 표시 배너 (내가 이만큼이나 해냈구나!) -->
+    <div class="global-journey-banner" id="global-journey-banner">
+      <div class="journey-banner-text">
+        <span>✨ 나의 전체 여정 진행도</span>
+        <strong id="journey-progress-text">0 / 50개 완료 (0%)</strong>
+      </div>
+      <div class="journey-progress-track">
+        <div class="journey-progress-bar" id="journey-progress-bar" style="width: 0%;"></div>
+      </div>
+    </div>
+
+    <!-- 1. 메인 화면 -->
+    <main class="screen-view active" id="screen-main">
+      <div class="main-clay-scene">
+        <!-- 원본 메인 화면 이미지 -->
+        <img src="main-screen.png" alt="마이트립 메인 화면과 노란 캠핑카" class="bg-image">
+
+        <!-- 캠핑카 도어 클릭 핫스팟 (차량 내부로 이동) -->
+        <div class="van-door-hotspot" id="van-door-hotspot" title="캠핑카 문을 열고 내부로 들어가기">
+          <div class="door-speech-bubble">내부로 이동 🚪</div>
+          <div class="pulse-target">
+            <div class="pulse-dot"></div>
+          </div>
+        </div>
+
+        <!-- 잔디밭 위의 요정 모아 캐릭터 (성장/계절 실시간 반영) -->
+        <div class="fairy-lawn-container" id="fairy-lawn-container" title="요정 모아의 방으로 이동">
+          <img src="assets/moa/egg_spring.png" alt="요정 모아" id="main-moa-img">
+          <div class="fairy-speech-bubble" id="main-moa-bubble">요정 모아의 알</div>
+        </div>
+      </div>
+
+      <!-- 성취감 응원 카드 -->
+      <div class="main-cheer-card">
+        <div class="cheer-icon" id="main-cheer-icon">🌱</div>
+        <div class="cheer-text">
+          <h4 id="main-cheer-title">나를 찾아가는 첫 번째 발걸음!</h4>
+          <p id="main-cheer-desc">오늘도 차근차근 나만의 이야기를 완성해 봐요.</p>
+        </div>
+      </div>
+
+      <!-- 메인 하단 액션 버튼들 -->
+      <div class="main-bottom-actions">
+        <button class="btn-sub-action" id="btn-open-settings">
+          <span style="font-size: 18px;">✏️</span>
+          <span>내 정보</span>
+        </button>
+        <button class="btn-primary-yellow" id="btn-go-interior">
+          <span>🚪 캠핑카 내부 들어가기</span>
+        </button>
+        <button class="btn-sub-action" id="btn-start-journey" style="background: #FFE8A3; border-color: #F0C450;">
+          <span style="font-size: 18px;">🗺️</span>
+          <span>지도 보기</span>
+        </button>
+      </div>
+    </main>
+
+    <!-- 2. 차량 내부 화면 -->
+    <section class="screen-view" id="screen-interior">
+      <div class="interior-scene-card">
+        <!-- 원본 차량 내부 이미지 -->
+        <img src="vehicle-interior.png" alt="캠핑카 내부 풍경" class="interior-bg">
+
+        <!-- 책상 위 여행일지 핫스팟 -->
+        <div class="interior-hotspot hotspot-journal" id="hotspot-journal" title="오늘의 여행 일지 열기">
+          <div class="hotspot-badge">📖 오늘의 일지</div>
+        </div>
+
+        <!-- 책상 위 지도 핫스팟 -->
+        <div class="interior-hotspot hotspot-map" id="hotspot-map" title="마을 지도 펼치기">
+          <div class="hotspot-badge">🗺️ 여행 지도</div>
+        </div>
+      </div>
+
+      <!-- 내부 제어 리스트 -->
+      <div class="interior-controls-list">
+        <div class="interior-card-btn" id="btn-interior-to-journal">
+          <div class="card-btn-icon">📝</div>
+          <div class="card-btn-text">
+            <h4>오늘의 여행 일지</h4>
+            <p>오늘의 질문을 확인하고 완료 체크를 해보세요</p>
+          </div>
+        </div>
+
+        <div class="interior-card-btn" id="btn-interior-to-map">
+          <div class="card-btn-icon">🗺️</div>
+          <div class="card-btn-text">
+            <h4>5개 마을 여행 지도</h4>
+            <p>다섯 개 마을의 개방 상태와 나의 진행도를 확인해요</p>
+          </div>
+        </div>
+
+        <div class="interior-card-btn" id="btn-interior-to-fairy">
+          <div class="card-btn-icon">🧚</div>
+          <div class="card-btn-text">
+            <h4>요정 모아의 방</h4>
+            <p>계절별 알과 성장 단계별 귀여운 소품을 만나요</p>
+          </div>
+        </div>
+
+        <button class="btn-sub-action" id="btn-interior-to-main" style="width: 100%; padding: 12px; margin-top: 4px;">
+          <span>← 캠핑카 밖으로 나가기</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- 3. 여행 지도 화면 (현재 위치 및 완료 마을 직관적 표시) -->
+    <section class="screen-view" id="screen-map">
+      <div class="map-header-bar">
+        <div class="map-header-title">
+          <span class="badge-red">여행 지도</span>
+          <span style="font-size: 13px; font-weight: 700; color: #4A3E31;">마을별 여정 확인</span>
+        </div>
+        <button class="btn-sub-action" id="btn-map-back" style="padding: 6px 14px; font-size: 13px;">
+          ← 내부로
+        </button>
+      </div>
+
+      <!-- 원본 마을 지도 이미지 카드 -->
+      <div class="map-visual-container">
+        <img src="village-map.png" alt="5개 마을 여행 지도">
+      </div>
+
+      <!-- 마을 진행 상태 카드 목록 (나, 가족, 친구, 지역사회, 진로) -->
+      <div class="villages-scroll-list" id="villages-scroll-list">
+        <!-- JS 동적 생성: 현재 캠핑카 위치 및 완주 메달 표시 -->
+      </div>
+    </section>
+
+    <!-- 4. 오늘의 질문 화면 (체크/도장 표시 및 마을별 완료 개수) -->
+    <section class="screen-view" id="screen-daily-question">
+      <div class="question-top-bar">
+        <span class="badge-red" id="q-village-badge">나 마을</span>
+        <button class="btn-sub-action" id="btn-question-back" style="padding: 6px 14px; font-size: 13px;">
+          ← 돌아가기
+        </button>
+      </div>
+
+      <!-- 중앙 질문 카드 -->
+      <div class="question-central-card">
+        <div>
+          <div class="q-badge-row">
+            <span class="q-badge" id="q-number-badge">질문 1 / 10</span>
+            <span class="q-status-stamp" id="q-status-stamp">💮 참 잘했어요! 완료</span>
+          </div>
+
+          <!-- 마을 내 완료 개수 성취 바 -->
+          <div style="font-size: 12px; font-weight: 800; color: #E67E22; margin-bottom: 12px;" id="q-village-progress-label">
+            🌱 이 마을 10개 중 0개 완료
+          </div>
+
+          <!-- 질문 본문 원문 -->
+          <p class="q-text-body" id="q-text-body">
+            내 이름(원래 이름 또는 한국 이름)에는 어떤 멋진 뜻이 담겨 있나요? 내가 가장 좋아하는 내 닉네임이 있다면 소개해 주세요.
+          </p>
+        </div>
+
+        <!-- 종이 일지 작성 안내 -->
+        <div class="q-paper-note">
+          <span style="font-size: 20px;">✏️</span>
+          <span>질문의 답변은 <strong>종이 여행 일지</strong>에 마음을 담아 직접 적어주세요. 앱에서는 완료 여부만 관리합니다.</span>
+        </div>
+      </div>
+
+      <!-- 하단 액션 버튼들 -->
+      <div class="question-nav-actions" style="margin-bottom: 8px;">
+        <button class="btn-sub-action" id="btn-prev-question" style="flex: 1; padding: 12px;">
+          ◀ 이전
+        </button>
+        <button class="btn-complete-check" id="btn-complete-check">
+          💮 질문 완료 도장 찍기
+        </button>
+        <button class="btn-sub-action" id="btn-next-question" style="flex: 1; padding: 12px;">
+          다음 ▶
+        </button>
+      </div>
+
+      <button class="btn-sub-action" id="btn-view-village-list" style="width: 100%; padding: 10px; font-size: 12px;">
+        📋 이 마을의 전체 질문 목록 보기
+      </button>
+    </section>
+
+    <!-- 5. 마을별 질문 목록 화면 -->
+    <section class="screen-view" id="screen-village-questions">
+      <div class="map-header-bar">
+        <h3 id="village-list-title" style="font-size: 15px; font-weight: 800; color: #4A3E31;">마을 질문 목록</h3>
+        <button class="btn-sub-action" id="btn-village-list-back" style="padding: 6px 14px; font-size: 13px;">
+          ← 지도 보기
+        </button>
+      </div>
+
+      <div class="villages-scroll-list" id="village-questions-container" style="flex: 1; overflow-y: auto;">
+        <!-- JS 동적 생성 -->
+      </div>
+    </section>
+
+    <!-- 6. 요정 모아 화면 (성장 단계 도감) -->
+    <section class="screen-view" id="screen-fairy">
+      <div class="map-header-bar">
+        <span class="badge-red">요정 모아</span>
+        <button class="btn-sub-action" id="btn-fairy-back" style="padding: 6px 14px; font-size: 13px;">
+          ← 돌아가기
+        </button>
+      </div>
+
+      <!-- 현재 모아 프로필 카드 -->
+      <div class="fairy-profile-card">
+        <div class="fairy-main-avatar">
+          <img src="assets/moa/egg_spring.png" alt="요정 모아" id="fairy-avatar-img">
+        </div>
+        <h3 id="fairy-title-name" style="font-size: 17px; font-weight: 800; color: #3B332B; margin-bottom: 6px;">
+          요정 모아
+        </h3>
+        <p id="fairy-desc-text" style="font-size: 13px; color: #7A6953; line-height: 1.5; margin-bottom: 12px;">
+          나의 질문을 먹고 함께 성장하는 정체성 요정이에요.
+        </p>
+        <div style="display: flex; justify-content: center; gap: 8px;">
+          <span class="q-badge" id="fairy-season-badge">계절: 봄 (꽃 장식)</span>
+          <span class="q-badge" id="fairy-stage-badge" style="background: #E8F8F5; color: #16A085;">진행도: 0%</span>
+        </div>
+      </div>
+
+      <!-- 계절별 알 종류 도감 -->
+      <div class="fairy-growth-roadmap">
+        <div class="roadmap-title">🌸 사계절 알 종류</div>
+        <div class="egg-types-grid">
+          <div class="egg-type-item">
+            <img src="assets/moa/egg_spring.png" alt="봄 알">
+            <div>봄 (꽃)</div>
+          </div>
+          <div class="egg-type-item">
+            <img src="assets/moa/egg_summer.png" alt="여름 알">
+            <div>여름 (잎)</div>
+          </div>
+          <div class="egg-type-item">
+            <img src="assets/moa/egg_autumn.png" alt="가을 알">
+            <div>가을 (은행)</div>
+          </div>
+          <div class="egg-type-item">
+            <img src="assets/moa/egg_winter.png" alt="겨울 알">
+            <div>겨울 (눈꽃)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 나 마을 5단계 부화 과정 -->
+      <div class="fairy-growth-roadmap">
+        <div class="roadmap-title">🐣 나 마을 부화 과정 (0% ~ 100%)</div>
+        <div class="me-steps-row">
+          <div class="me-step-item">
+            <img src="assets/moa/me_0.png" alt="0% 알">
+            <div>0% 알</div>
+          </div>
+          <div class="me-step-item">
+            <img src="assets/moa/me_25.png" alt="25% 금">
+            <div>25% 금</div>
+          </div>
+          <div class="me-step-item">
+            <img src="assets/moa/me_50.png" alt="50% 깨짐">
+            <div>50% 깨짐</div>
+          </div>
+          <div class="me-step-item">
+            <img src="assets/moa/me_75.png" alt="75% 부화">
+            <div>75% 부화</div>
+          </div>
+          <div class="me-step-item">
+            <img src="assets/moa/me_100.png" alt="100% 모아">
+            <div>100% 탄생</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 마을별 소품 안내 -->
+      <div class="fairy-growth-roadmap">
+        <div class="roadmap-title">🎈 마을별 소품 모아</div>
+        <div class="me-steps-row">
+          <div class="me-step-item">
+            <img src="assets/moa/prop_family.png" alt="가족 풍선">
+            <div>가족 (풍선)</div>
+          </div>
+          <div class="me-step-item">
+            <img src="assets/moa/prop_friend.png" alt="친구 필기구">
+            <div>친구 (필기구)</div>
+          </div>
+          <div class="me-step-item">
+            <img src="assets/moa/prop_community.png" alt="지역사회 지구본">
+            <div>지역사회 (지구본)</div>
+          </div>
+          <div class="me-step-item">
+            <img src="assets/moa/prop_career.png" alt="진로 나침반">
+            <div>진로 (나침반)</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /#app-container -->
+
+  <!-- 토스트 알림 메시지 바 -->
+  <div id="toast-notification">안내 메시지</div>
+
+  <!-- 🎉 모달 1: 다음 마을 해금 축하 모달 (시각적 축하 효과) -->
+  <div class="modal-overlay" id="modal-village-unlock">
+    <div class="modal-box">
+      <div class="celebrate-card">
+        <div class="celebrate-animation-icon">🎉</div>
+        <h3 class="celebrate-title" id="celebrate-village-title">새로운 마을이 열렸어요!</h3>
+        <p class="celebrate-desc" id="celebrate-village-desc">
+          마을의 모든 질문을 멋지게 완주했습니다.<br>
+          노란 캠핑카를 타고 다음 마을로 힘차게 나아가요! 🚐
+        </p>
+        <button class="btn-primary-yellow" id="btn-confirm-unlock" style="width: 100%;">
+          ✨ 새로운 마을 여행하기
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 모달 2: 여행자 프로필 설정 (닉네임 + 계절) -->
+  <div class="modal-overlay" id="modal-user-setup">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>🚐 나의 여행 설정</h3>
+      </div>
+      <div style="font-size: 13px; color: #635242; margin-bottom: 16px; line-height: 1.5;">
+        반가워요! 나만의 노란 캠핑카를 타고 다섯 마을로의 특별한 자아탐색 여행을 시작해 볼까요?
+      </div>
+
+      <div style="margin-bottom: 16px; text-align: left;">
+        <label style="font-size: 13px; font-weight: 800; display: block; margin-bottom: 6px; color: #4A3E31;">
+          여행자 이름 또는 닉네임
+        </label>
+        <input type="text" id="custom-user-id" placeholder="예: 모아친구, 별이 등" style="width: 100%; padding: 12px; border-radius: 14px; border: 2px solid #EAD8B5; font-size: 14px;">
+      </div>
+
+      <div style="margin-bottom: 20px; text-align: left;">
+        <label style="font-size: 13px; font-weight: 800; display: block; margin-bottom: 6px; color: #4A3E31;">
+          태어난 계절 선택 (요정 디자인)
+        </label>
+        <select id="season-select" style="width: 100%; padding: 12px; border-radius: 14px; border: 2px solid #EAD8B5; font-size: 14px;">
+          <option value="spring">🌸 봄 (3~5월) - 분홍색 꽃 장식</option>
+          <option value="summer">🌿 여름 (6~8월) - 초록색 잎 장식</option>
+          <option value="autumn">🍁 가을 (9~11월) - 노란 은행잎 장식</option>
+          <option value="winter">❄️ 겨울 (12~2월) - 파란 눈꽃 장식</option>
+        </select>
+      </div>
+
+      <button class="btn-primary-yellow" id="btn-save-user-setup" style="width: 100%;">
+        캠핑카 여행 출발하기! 🚐
+      </button>
+    </div>
+  </div>
+
+  <!-- 스크립트 로드 순서: 질문 데이터 -> 규칙 -> 요정 -> 저장소 -> 메인 앱 -->
+  <script src="data/questions.js"></script>
+  <script src="js/rules.js"></script>
+  <script src="js/fairy.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

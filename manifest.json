@@ -1,0 +1,22 @@
+{
+  "name": "마이트립(My Trip) - 동화형 자아탐색 여행",
+  "short_name": "마이트립",
+  "description": "노란 캠핑카를 타고 요정 모아와 함께 5개 마을을 여행하는 청소년 자아탐색 웹앱",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#FFFDF5",
+  "theme_color": "#FFD23F",
+  "icons": [
+    {
+      "src": "assets/moa/me_100.png",
+      "sizes": "75x90",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/moa/final_spring.png",
+      "sizes": "65x70",
+      "type": "image/png"
+    }
+  ]
+}
+
